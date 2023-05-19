@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Generic Page - Massively by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+				<!-- Header -->
+					<header id="header">
+						<h1>Consulta de nomes</h1>
+    					<h2>Digite um nome:</h2>
+						<h6>pesquise mais de um nome utilizando " | "</h6>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+							<input type="text" id="nome"></input>
+    						<button class="glow-on-hover" onclick="consultarNome()" type="button">Consultar</button>
+					</nav>
+				<!-- Main -->
+					<div id="main">
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1 e id="nomeh"> </h1>
+										<br/><!--  -->
+										<div id="resultado">
+											<table>
+												<thead>
+													<tr>      
+														<th>Nome</th>
+														<th>sexo</th>
+														<th>localidade</th>
+														<th>Frequência</th>
+													</tr>
+												</thead>
+												<br>
+												<tbody id="tbody">
+												</tbody>
+											</table>
+										</div>
+								</header>
+								
+							</section>
+
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+		<script>
+			const URL_BASE = "https://servicodados.ibge.gov.br/api/v2/censos/nomes/"; /* LINK DA API */
+			const CHAVE_API = ""; /* CHAVE DA API */
+			
+			function consultarNome() {   /* CONSUTA O NOME  */
+				const nome = document.getElementById("nome").value;
+				const url = URL_BASE + encodeURIComponent(nome);
+				document.querySelector("#nomeh").innerHTML = nome;
+			
+				fetch(url) /* BAIXAR OS CONTEUDO DA API */
+					.then(response => response.json()) /* respose json */
+					.then(data => exibirResultado(data)) /* EXBIR FREQUENCIA */
+					.catch(error => console.error(error));/* aviso de erro */
+			}
+			
+			function exibirResultado(data) { /* EXIBIR OS RESULTADOS */
+				const resultadoTable = document.querySelector("#tbody");
+				resultadoTable.innerHTML = "";
+			
+				if (data.length > 0) {			/* laço de repetição responsavel por todas as frequencias da api */
+					data.forEach(item => {
+						console.log(item);
+			
+						const lista = document.createElement("ul")   /* cria uma lista  */
+			
+						const nome = item.nome;
+						const sexo = item.sexo;	
+						const localidade = item.localidade;
+			
+						for(const periodo of item.res) {
+							const elementoLista = document.createElement("p") /*  dentro da lista deixa como p */
+			
+							elementoLista.innerHTML = `Período: ${periodo.periodo} - Frequência: ${periodo.frequencia}`
+							lista.appendChild(elementoLista)
+						}
+			
+						const row = document.createElement("tr"); /* cria tabela  */
+						row.innerHTML = `<td>${nome}</td><td>${sexo}</td><td>${localidade}</td>`;/* SALVA NA TABELA */
+			
+						const td = document.createElement("td")
+			
+						td.appendChild(lista)  /* ADD NA LISTA  */
+						row.appendChild(td)  /*  ADD NA TABELA */
+			
+						resultadoTable.appendChild(row);
+					});
+			
+				} else { /* ERRO, NOME NÃO ENCONTRADO */
+					const row = document.createElement("tr");
+					row.innerHTML = "<td colspan='3'>Nenhum resultado encontrado.</td>";
+					resultadoTable.appendChild(row);
+				}
+			}
+			
+				</script>
+
+			<!-- script do css -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+	
+	</body>
+</html>

@@ -1,0 +1,17 @@
+	#wrapper {
+		background-color: #212931;
+		background-size: auto,								auto,														100% auto;
+		background-position: center,								center,														top center;
+		background-repeat: repeat,								no-repeat,													no-repeat;
+		background-attachment: fixed,								fixed,														fixed;
+	}
+
+		#wrapper.fade-in:before {
+			display: none;
+		}
+
+/* Intro */
+
+	body.is-preload #intro {
+		opacity: 1;
+	}
